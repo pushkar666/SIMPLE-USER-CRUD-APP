@@ -1,6 +1,8 @@
 package com.user_management.service;
 
-import java.util.List;
+// import java.util.List;
+
+import org.springframework.data.domain.Page;
 
 import com.user_management.entity.User;
 // import com.user_management.globalException.UserNotFoundException;
@@ -10,7 +12,7 @@ public interface UserService {
 
 	public User saveUser(User user);
 
-	public List<User> getAllUsers();
+	public Page<User> getAllUsers(int page, int size);
 
 	public User getUserById(Integer id);
 

@@ -1,8 +1,11 @@
 package com.user_management.service;
 
-import java.util.List;
+// import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.user_management.entity.User;
@@ -23,12 +26,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getAllUsers() throws UsersNotFoundException {
-		return userRepository.findAll();
+	public Page<User> getAllUsers(int page, int size) throws UsersNotFoundException {
+		Pageable pageable = PageRequest.of(page, size);
+		return userRepository.findAll(pageable);
 	}
 
 	@Override
-	public User getUserById(Integer id) throws UserNotFoundException{
+	public User getUserById(Integer id) throws UserNotFoundException {
 		return userRepository.findById(id).get();
 	}
 
