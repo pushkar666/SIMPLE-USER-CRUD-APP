@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.user_management.user_management_spring_boot.entity.UserInfo;
+import com.user_management.user_management_spring_boot.entity.UserInfoResponseAPI;
 import com.user_management.user_management_spring_boot.entity.UserQueryParams;
 import com.user_management.user_management_spring_boot.repo.UserInfoRepository;
 
@@ -60,15 +61,29 @@ public class UserInfoService implements UserDetailsService {
         return repository.existsByUserName(username);
     }
 
-    public Page<UserInfo> queryUsers(UserQueryParams queryParams, Pageable pageable) {
-        return repository.findUsers(
-                queryParams.getUserId(),
-                queryParams.getFirstName(),
-                queryParams.getLastName(),
-                queryParams.getEmail(),
-                queryParams.getUserName(),
-                pageable
-        );
+    // public Page<UserInfo> queryUsers(UserQueryParams queryParams, Pageable pageable) {
+    //     return repository.findUsers(
+    //             queryParams.getUserId(),
+    //             queryParams.getFirstName(),
+    //             queryParams.getLastName(),
+    //             queryParams.getEmail(),
+    //             queryParams.getUserName(),
+    //             pageable
+    //     );
+    // }
+
+    public Page<UserInfoResponseAPI> queryUsers(UserQueryParams queryParams, Pageable pageable) {
+        Page<UserInfo> users = repository.findUsers(queryParams.getUserId(), queryParams.getFirstName(), queryParams.getLastName(), queryParams.getEmail(), queryParams.getUserName(), pageable);
+        return users.map(user -> {
+            UserInfoResponseAPI response = new UserInfoResponseAPI();
+            response.setId(user.getId());
+            response.setUserName(user.getUserName());
+            response.setFirstName(user.getFirstName());
+            response.setLastName(user.getLastName());
+            response.setEmail(user.getEmail());
+            response.setRoles(user.getRoles());
+            return response;
+        });
     }
     
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.user_management.user_management_spring_boot.entity.AuthRequest;
 import com.user_management.user_management_spring_boot.entity.UserInfo;
+import com.user_management.user_management_spring_boot.entity.UserInfoResponseAPI;
 import com.user_management.user_management_spring_boot.entity.UserQueryParams;
 import com.user_management.user_management_spring_boot.entity.UserResponse;
 import com.user_management.user_management_spring_boot.service.JwtService;
@@ -105,14 +106,14 @@ public class UserController {
     //
     //
     @PostMapping("/queryUsers")
-    public ResponseEntity<Page<UserInfo>> queryUsers(@RequestBody UserQueryParams queryParams,
+    public ResponseEntity<Page<UserInfoResponseAPI>> queryUsers(@RequestBody UserQueryParams queryParams,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
             Pageable pageable) {
         if (!isAuthenticated(authHeader)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Page<UserInfo> matchingUsers = service.queryUsers(queryParams, pageable);
+        Page<UserInfoResponseAPI> matchingUsers = service.queryUsers(queryParams, pageable);
         return ResponseEntity.ok(matchingUsers);
     }
 

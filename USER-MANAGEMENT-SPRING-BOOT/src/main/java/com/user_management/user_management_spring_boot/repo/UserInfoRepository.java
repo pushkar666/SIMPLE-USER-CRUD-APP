@@ -23,7 +23,8 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {
                         "( :firstName IS NULL OR u.firstName LIKE %:firstName% ) AND " +
                         "( :lastName IS NULL OR u.lastName LIKE %:lastName% ) AND " +
                         "( :email IS NULL OR u.email LIKE %:email% ) AND " +
-                        "( :userName IS NULL OR u.userName LIKE %:userName% )")
+                        "( :userName IS NULL OR u.userName LIKE %:userName% ) " +
+                        "ORDER BY u.firstName ASC")
         Page<UserInfo> findUsers(
                         @Param("userId") Integer userId,
                         @Param("firstName") String firstName,
