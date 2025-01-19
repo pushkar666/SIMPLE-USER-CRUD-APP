@@ -31,6 +31,7 @@ import com.user_management.user_management_spring_boot.service.UserInfoService;
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/auth")
 public class UserController {
 
