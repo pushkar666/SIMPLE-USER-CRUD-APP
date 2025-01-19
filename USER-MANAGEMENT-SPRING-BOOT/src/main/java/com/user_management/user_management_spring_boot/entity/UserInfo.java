@@ -1,5 +1,7 @@
 package com.user_management.user_management_spring_boot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +39,7 @@ public class UserInfo {
     @Email(message = "Email should be valid")
     private String email;
 
+    @JsonIgnore
     @NotNull(message = "Password is required")
     @Size(min = 8, message = "Password should be at least 8 characters long")
     @Pattern(regexp = "(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=]).*", message = "Password should have at least one uppercase letter, one number, and one special character")

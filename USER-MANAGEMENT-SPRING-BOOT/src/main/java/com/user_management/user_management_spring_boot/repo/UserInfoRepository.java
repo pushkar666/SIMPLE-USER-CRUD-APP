@@ -14,22 +14,22 @@ import java.util.Optional;
 
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {
-    Optional<UserInfo> findByUserName(String userName); // Use 'email' if that is the correct field for login
+        Optional<UserInfo> findByUserName(String userName); // Use 'email' if that is the correct field for login
 
-    boolean existsByUserName(String userName); //
+        boolean existsByUserName(String userName); //
 
-    @Query("SELECT u FROM UserInfo u WHERE " +
-            "( :userId IS NULL OR u.id = :userId ) AND " +
-            "( :firstName IS NULL OR u.firstName LIKE %:firstName% ) AND " +
-            "( :lastName IS NULL OR u.lastName LIKE %:lastName% ) AND " +
-            "( :email IS NULL OR u.email LIKE %:email% ) AND " +
-            "( :userName IS NULL OR u.userName LIKE %:userName% )")
-    Page<UserInfo> findUsers(
-            @Param("userId") Integer userId,
-            @Param("firstName") String firstName,
-            @Param("lastName") String lastName,
-            @Param("email") String email,
-            @Param("userName") String userName,
-            Pageable pageable);
+        @Query("SELECT u FROM UserInfo u WHERE " +
+                        "( :userId IS NULL OR u.id = :userId ) AND " +
+                        "( :firstName IS NULL OR u.firstName LIKE %:firstName% ) AND " +
+                        "( :lastName IS NULL OR u.lastName LIKE %:lastName% ) AND " +
+                        "( :email IS NULL OR u.email LIKE %:email% ) AND " +
+                        "( :userName IS NULL OR u.userName LIKE %:userName% )")
+        Page<UserInfo> findUsers(
+                        @Param("userId") Integer userId,
+                        @Param("firstName") String firstName,
+                        @Param("lastName") String lastName,
+                        @Param("email") String email,
+                        @Param("userName") String userName,
+                        Pageable pageable);
 
 }
