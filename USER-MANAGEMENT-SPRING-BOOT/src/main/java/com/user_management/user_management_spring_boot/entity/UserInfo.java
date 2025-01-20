@@ -1,6 +1,6 @@
 package com.user_management.user_management_spring_boot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,10 +16,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This class represents a user's information and is used as an entity in the database.
- * It is annotated with JPA annotations to define the table name and field mappings.
+ * This class represents a user's information and is used as an entity in the
+ * database.
+ * It is annotated with JPA annotations to define the table name and field
+ * mappings.
  *
- * @author YourName
+ * @author PUSHKAR D
  * @version 1.0
  */
 @Entity
@@ -68,7 +70,8 @@ public class UserInfo {
 
     /**
      * The password of the user.
-     * It is required, should be at least 8 characters long, and should have at least one uppercase letter, one number, and one special character.
+     * It is required, should be at least 8 characters long, and should have at
+     * least one uppercase letter, one number, and one special character.
      */
     // @JsonIgnore
     @NotNull(message = "Password is required")
@@ -78,7 +81,6 @@ public class UserInfo {
 
     /**
      * The roles assigned to the user.
-     * It is a comma-separated string of roles.
      */
     private String roles;
 }

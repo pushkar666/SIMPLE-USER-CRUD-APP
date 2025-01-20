@@ -4,12 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a request for authentication.
+ * This class is used to encapsulate the necessary information for user
+ * authentication.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequest {
 
+    /**
+     * The username of the user attempting to authenticate.
+     */
     private String userName;
+
+    /**
+     * The password of the user attempting to authenticate.
+     */
     private String passWord;
 
 }

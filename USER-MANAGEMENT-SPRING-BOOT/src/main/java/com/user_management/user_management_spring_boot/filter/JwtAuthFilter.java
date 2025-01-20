@@ -18,16 +18,41 @@ import com.user_management.user_management_spring_boot.service.UserInfoService;
 
 import java.io.IOException;
 
+/**
+ * This class is a custom filter for JWT (JSON Web Tokens) authentication in a Spring Boot application.
+ * It extends the {@link OncePerRequestFilter} class and is responsible for validating and authenticating
+ * incoming requests based on the presence of a valid JWT token in the request's Authorization header.
+ *
+ * @author PUSHKAR D
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
+    /**
+     * The {@link JwtService} instance used for token validation and extraction.
+     */
     @Autowired
     private JwtService jwtService;
 
+    /**
+     * The {@link UserInfoService} instance used to load user details by username.
+     */
     @Autowired
     @Lazy
     private UserInfoService userDetailsService;
 
+    /**
+     *
+     * This method is called for each incoming request. It retrieves the Authorization header, extracts
+     * the JWT token, and validates it. If the token is valid and no authentication is set in the context,
+     * it sets up a new {@link UsernamePasswordAuthenticationToken} and authenticates the user.
+     *
+     * @param request The incoming HTTP request.
+     * @param response The outgoing HTTP response.
+     * @param filterChain The filter chain to continue processing the request.
+     * @throws ServletException If an error occurs during the processing of the request.
+     * @throws IOException If an error occurs during the processing of the request.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
