@@ -166,11 +166,10 @@ C:.
 - **POST** `/api/auth/login`: Authenticate user and generate JWT.
 
 ### User Management
-- **GET** `/api/users`: Retrieve all users.
-- **GET** `/api/users/{id}`: Retrieve user by ID.
-- **POST** `/api/users`: Add a new user.
-- **PUT** `/api/users/{id}`: Update user details.
-- **DELETE** `/api/users/{id}`: Delete a user.
+- **GET** `/api/users`: Retrieve all paginated users.
+- **POST** `/api/addNewUser`: Add a new user.
+- **POST** `/api/generateToken`: Generates Token on Login
+- **POST** `/api/queryUsers`: Retrieve queried paginated users.
 
 ---
 
