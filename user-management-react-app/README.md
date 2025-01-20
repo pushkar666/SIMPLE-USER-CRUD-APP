@@ -29,7 +29,7 @@ This project is a React-based login form that integrates with a backend service 
    ```
 2. Navigate to the project directory:
    ```bash
-   cd your-repository
+   cd user-management-react-app/
    ```
 3. Install dependencies:
    ```bash
