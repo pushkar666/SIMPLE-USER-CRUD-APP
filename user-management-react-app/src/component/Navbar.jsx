@@ -3,8 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Drawer, Button, InputBase, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import UserService from '../service/UserService';
+// import UserService from '../service/UserService';
 
+/**
+ * A functional component that renders a navigation bar with a drawer menu, search functionality, and authentication controls.
+ *
+ * @param {Object} props - The component's props.
+ * @param {boolean} props.isAuthenticated - Indicates whether the user is authenticated.
+ * @param {Function} props.setIsAuthenticated - A function to set the authentication state.
+ *
+ * @returns {JSX.Element} - The rendered navigation bar component.
+ */
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -62,10 +71,10 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
                         <SearchIcon />
                         <InputBase
-                            placeholder="Search…"
+                            placeholder="SEARCH FOR USERS"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyPress={handleSearch}
+                            onKeyDown={handleSearch}
                         />
                     </Box>
                 )}

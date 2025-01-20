@@ -4,10 +4,58 @@ const API_URL = 'http://localhost:8080/auth/'; // Replace with your actual API b
 
 const UserService = {
     /**
+     * Fetches users with pagination.
+     * @returns {Promise} Axios response or error.
+     */
+    getUsers: async (page = 0, size = 10) => {
+        try {
+            const token = localStorage.getItem('token');
+            console.log(token);
+            
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    page: page,
+                    size: size
+                },
+            };
+            console.log(config);
+            const response = await axios.get(`${API_URL}users/`, config);
+            console.log(response);
+            
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            throw error;
+        }
+    },
+
+    /**
      * Fetches users based on query parameters.
      * @returns {Promise} Axios response or error.
      */
-    getUsers: async (queryParams = {}) => {
+    // queryUsers: async (queryParams, page = 0, size = 10) => {
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         const config = {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //             params: {
+    //                 page: page,
+    //                 size: size
+    //             },
+    //         };
+    //         const response = await axios.post(`${API_URL}queryUsers`, queryParams, config);
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error('Error fetching queried users:', error);
+    //         throw error;
+    //     }
+    // }
+    queryUsers: async (queryParams, page = 0, size = 10) => {
         try {
             const token = localStorage.getItem('token');
             const config = {
@@ -15,10 +63,15 @@ const UserService = {
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post(`${API_URL}queryUsers`, queryParams, config);
+            const body = {
+                ...queryParams,
+                page: page,
+                size: size
+            };
+            const response = await axios.post(`${API_URL}queryUsers`, body, config); // Using POST and sending data in the body
             return response.data;
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error fetching queried users:', error);
             throw error;
         }
     },
@@ -43,21 +96,6 @@ const UserService = {
      * @param {Object} userInfo - User information { username, firstName, lastName, email, password }.
      * @returns {Promise} Axios response or error.
      */
-    // addNewUser: async (userInfo) => {
-    //     try {
-    //         const token = localStorage.getItem('token');
-    //         const config = {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         };
-    //         const response = await axios.post(`${API_URL}addNewUser`, userInfo, config);
-    //         return response.data;
-    //     } catch (error) {
-    //         console.error('Error adding new user:', error);
-    //         throw error;
-    //     }
-    // },
     addNewUser: async (userInfo) => {
         try {
             const response = await axios.post(`${API_URL}addNewUser`, userInfo);

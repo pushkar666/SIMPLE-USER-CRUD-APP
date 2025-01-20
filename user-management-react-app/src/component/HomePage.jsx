@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Typography, Box } from '@mui/material';
 import UserService from '../service/UserService';
 
+/**
+ * The HomePage component is responsible for displaying a list of users fetched from the API.
+ * It uses React hooks to manage state and fetch data when the component mounts or the authentication status changes.
+ *
+ * @param {Object} props - The component's props
+ * @param {boolean} props.isAuthenticated - Indicates whether the user is authenticated or not
+ *
+ * @returns {JSX.Element} - The rendered HomePage component
+ */
 const HomePage = ({ isAuthenticated }) => {
     const [users, setUsers] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(1);
-    const [searchParams] = useSearchParams();
+    const [size] = useState(10); // Default page size (you can adjust this if needed)
+    // const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        if (isAuthenticated) {
-            const queryParams = Object.fromEntries([...searchParams]);
-            UserService.getUsers({ ...queryParams, page: page - 1 })
-                .then((data) => {
+        const fetchUsers = async () => {
+            if (isAuthenticated) {
+                try {
+                    const data = await UserService.getUsers(page - 1, size); // API expects 0-based page index
                     setUsers(data.content);
                     setTotalPages(data.totalPages);
-                })
-                .catch((err) => console.error(err));
-        }
-    }, [isAuthenticated, page, searchParams]);
+                } catch (err) {
+                    console.error("Error fetching users:", err);
+                }
+            }
+        };
+
+        fetchUsers();
+    }, [isAuthenticated, page, size]);
+
 
     return (
         <Box sx={{ p: 3 }}>
