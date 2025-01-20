@@ -122,11 +122,20 @@ C:.
    ```
 3. Update `application.properties` (if required):
    ```properties
-   spring.datasource.url=jdbc:h2:mem:testdb
-   spring.datasource.username=sa
-   spring.datasource.password=password
+   spring.application.name=user-management-spring-boot
+   # Database Config (Consider using environment variables for username and password)
+   spring.datasource.driver-class-name=org.postgresql.Driver
+   spring.datasource.url=jdbc:postgresql://localhost:5432/user
+   spring.datasource.username=postgres
+   spring.datasource.password={YOUR PASSWORD}
+
+   # ORM Config
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
    spring.jpa.hibernate.ddl-auto=update
-   jwt.secret-key=your-secret-key
+
+   spring.security.user.password={YOUR PASSWORD}
+   
    ```
 4. Build and run the application:
    ```bash
