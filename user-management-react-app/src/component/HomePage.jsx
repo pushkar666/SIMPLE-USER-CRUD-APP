@@ -24,6 +24,7 @@ const HomePage = ({ isAuthenticated }) => {
             if (isAuthenticated) {
                 try {
                     const data = await UserService.getUsers(page - 1, size); // API expects 0-based page index
+                    // console.log(data.content);
                     setUsers(data.content);
                     setTotalPages(data.totalPages);
                 } catch (err) {
@@ -59,7 +60,7 @@ const HomePage = ({ isAuthenticated }) => {
                                     <TableCell>{user.firstName}</TableCell>
                                     <TableCell>{user.lastName}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.roles.join(', ')}</TableCell>
+                                    <TableCell>{user.roles}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

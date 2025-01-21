@@ -10,7 +10,10 @@ const UserService = {
     getUsers: async (page = 0, size = 10) => {
         try {
             const token = localStorage.getItem('token');
-            console.log(token);
+            // console.log(token);
+            if (!token) {
+                throw new Error('Token is missing. Please log in again.');
+            }
             
             const config = {
                 headers: {
@@ -21,9 +24,9 @@ const UserService = {
                     size: size
                 },
             };
-            console.log(config);
-            const response = await axios.get(`${API_URL}users/`, config);
-            console.log(response);
+            // console.log(config);
+            const response = await axios.get(`${API_URL}users`, config);
+            // console.log(response.data);
             
             return response.data;
         } catch (error) {

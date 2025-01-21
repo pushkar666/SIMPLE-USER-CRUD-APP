@@ -122,7 +122,7 @@ const AddUser = () => {
                     autoHideDuration={6000}
                     onClose={() => setError('')}
                 >
-                    <Alert severity={error ? 'error' : 'success'}>{error}</Alert>
+                    <Alert severity={error ? 'success' : 'error'}>{error}</Alert>
                 </Snackbar>
             )}
         </Box>

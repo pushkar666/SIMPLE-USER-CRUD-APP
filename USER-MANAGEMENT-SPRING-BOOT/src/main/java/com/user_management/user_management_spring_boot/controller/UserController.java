@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -199,7 +200,7 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<Page<UserInfoResponseAPI>> getUsers(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
-            Pageable pageable) {
+            @PageableDefault(size = 10) Pageable pageable) {
         if (!isAuthenticated(authHeader)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -233,7 +234,7 @@ public class UserController {
     @PostMapping("/queryUsers")
     public ResponseEntity<Page<UserInfoResponseAPI>> queryUsers(@RequestBody UserQueryParams queryParams,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
-            Pageable pageable) {
+            @PageableDefault(size = 10) Pageable pageable) {
         if (!isAuthenticated(authHeader)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

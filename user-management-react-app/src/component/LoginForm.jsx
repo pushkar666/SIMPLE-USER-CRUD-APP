@@ -66,6 +66,10 @@ const LoginForm = ({ setIsAuthenticated }) => {
         e.preventDefault();
         try {
             const token = await UserService.login(credentials);
+            if (!token) {
+                throw new Error('Token not received.');
+            }
+            // console.log(token);
             localStorage.setItem('token', token);
             setIsAuthenticated(true);
             navigate('/home');
