@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-// import { useSearchParams } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Typography, Box } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import UserService from '../service/UserService';
 
 /**
@@ -8,23 +8,23 @@ import UserService from '../service/UserService';
  * It uses React hooks to manage state and fetch data when the component mounts or the authentication status changes.
  *
  * @param {Object} props - The component's props
- * @param {boolean} props.isAuthenticated - Indicates whether the user is authenticated or not
+ * @param {boolean} props.isAuthenticated - Indicates whether the user is authenticated or not.
+ * @param {Array} props.users - The list of users to display.
+ * @param {number} props.totalPages - Total number of pages for pagination.
+ * @param {Function} props.setUsers - Function to update the user list.
+ * @param {Function} props.setTotalPages - Function to update the total number of pages.
  *
- * @returns {JSX.Element} - The rendered HomePage component
+ * @returns {JSX.Element} - The rendered HomePage component.
  */
-const HomePage = ({ isAuthenticated }) => {
-    const [users, setUsers] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
+const HomePage = ({ isAuthenticated, users, totalPages, setUsers, setTotalPages }) => {
     const [page, setPage] = useState(1);
     const [size] = useState(10); // Default page size (you can adjust this if needed)
-    // const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            if (isAuthenticated) {
+            if (isAuthenticated && !users.length) {
                 try {
                     const data = await UserService.getUsers(page - 1, size); // API expects 0-based page index
-                    // console.log(data.content);
                     setUsers(data.content);
                     setTotalPages(data.totalPages);
                 } catch (err) {
@@ -34,8 +34,18 @@ const HomePage = ({ isAuthenticated }) => {
         };
 
         fetchUsers();
-    }, [isAuthenticated, page, size]);
+    }, [isAuthenticated, page, size, users, setUsers, setTotalPages]);
 
+    const handlePageChange = async (event, newPage) => {
+        setPage(newPage);
+        try {
+            const data = await UserService.getUsers(newPage - 1, size);
+            setUsers(data.content);
+            setTotalPages(data.totalPages);
+        } catch (err) {
+            console.error("Error fetching users:", err);
+        }
+    };
 
     return (
         <Box sx={{ p: 3 }}>
@@ -68,13 +78,22 @@ const HomePage = ({ isAuthenticated }) => {
                     <Pagination
                         count={totalPages}
                         page={page}
-                        onChange={(e, newPage) => setPage(newPage)}
+                        onChange={handlePageChange}
                         sx={{ mt: 2 }}
                     />
                 </>
             ) : (
-                <Typography sx={{ opacity: 0.5, textAlign: 'center', mt: 5 }}>
-                    Please Login to see Users
+                <Typography
+                    sx={{
+                        opacity: 0.5,
+                        textAlign: 'center',
+                        mt: 5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    Login to See Users, click on the Menu App Drawer <MenuIcon sx={{ margin: 1 }} /> to Login
                 </Typography>
             )}
         </Box>

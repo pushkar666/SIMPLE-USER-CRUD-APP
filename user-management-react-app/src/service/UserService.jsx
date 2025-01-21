@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { data } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8080/auth/'; // Replace with your actual API base URL
 
@@ -60,6 +61,7 @@ const UserService = {
     // }
     queryUsers: async (queryParams, page = 0, size = 10) => {
         try {
+            console.log(queryParams);
             const token = localStorage.getItem('token');
             const config = {
                 headers: {
@@ -72,6 +74,7 @@ const UserService = {
                 size: size
             };
             const response = await axios.post(`${API_URL}queryUsers`, body, config); // Using POST and sending data in the body
+            console.log(response);
             return response.data;
         } catch (error) {
             console.error('Error fetching queried users:', error);

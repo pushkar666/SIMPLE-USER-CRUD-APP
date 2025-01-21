@@ -19,6 +19,9 @@ const App = () => {
         return !!token; // Set to true if token exists, false otherwise
     });
 
+    const [users, setUsers] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -28,12 +31,37 @@ const App = () => {
         }
     }, []);
 
+    const handleSearch = async (query) => {
+        if (isAuthenticated) {
+            try {
+                console.log(query);
+                const data = await UserService.queryUsers(query);
+                console.log(data.content);
+                setUsers(data.content);
+                setTotalPages(data.totalPages);
+            } catch (error) {
+                console.error('Error fetching queried users:', error);
+            }
+        }
+    };
+
     return (
         <Router>
-            <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+            <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} onSearch={handleSearch} />
             <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<HomePage isAuthenticated={isAuthenticated} />} />
+                <Route
+                    path="/"
+                    element={
+                        <HomePage
+                            isAuthenticated={isAuthenticated}
+                            users={users}
+                            totalPages={totalPages}
+                            setUsers={setUsers}
+                            setTotalPages={setTotalPages}
+                        />
+                    }
+                />
                 <Route path="/login" element={<LoginForm setIsAuthenticated={setIsAuthenticated} />} />
                 <Route path="/add-user" element={<AddUser />} />
 
@@ -42,7 +70,13 @@ const App = () => {
                     path="/home"
                     element={
                         isAuthenticated ? (
-                            <HomePage isAuthenticated={isAuthenticated} />
+                            <HomePage
+                                isAuthenticated={isAuthenticated}
+                                users={users}
+                                totalPages={totalPages}
+                                setUsers={setUsers}
+                                setTotalPages={setTotalPages}
+                            />
                         ) : (
                             <Navigate to="/login" />
                         )

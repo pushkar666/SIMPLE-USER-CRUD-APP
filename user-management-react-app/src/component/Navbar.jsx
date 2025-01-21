@@ -14,9 +14,10 @@ import SearchIcon from '@mui/icons-material/Search';
  *
  * @returns {JSX.Element} - The rendered navigation bar component.
  */
-const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
+const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchKey, setSearchKey] = useState('');
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -26,8 +27,12 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     };
 
     const handleSearch = (e) => {
-        if (e.key === 'Enter' && isAuthenticated) {
-            navigate(`/home?search=${searchQuery}`);
+        if (e.key === 'Enter' && isAuthenticated && searchQuery) {
+            const queryParams = {};
+            console.log(searchKey);
+            queryParams[searchKey] = searchQuery;
+            console.log(queryParams);
+            onSearch(queryParams);
         }
     };
 
@@ -65,13 +70,24 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                     </Box>
                 </Drawer>
                 <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
-                    NAVBAR
+                    USER-APP
                 </Typography>
+                <select 
+                    value={searchKey} // Ensure that the value is tracked
+                    onChange={(e) => setSearchKey(e.target.value)} 
+                    style={{ marginLeft: 10, marginRight: 10 }}
+                >
+                    <option value="">Select Field</option>
+                    <option value="firstName">First Name</option>
+                    <option value="lastName">Last Name</option>
+                    <option value="userName">Username</option>
+                    <option value="email">Email</option>
+                </select>
                 {isAuthenticated && (
                     <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
-                        <SearchIcon />
+                        <SearchIcon color='info'/>
                         <InputBase
-                            placeholder="SEARCH FOR USERS"
+                            placeholder="SEARCH USERS"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={handleSearch}
