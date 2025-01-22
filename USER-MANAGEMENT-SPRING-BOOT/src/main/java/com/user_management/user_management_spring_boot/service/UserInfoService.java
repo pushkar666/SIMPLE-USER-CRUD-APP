@@ -68,6 +68,9 @@ public class UserInfoService implements UserDetailsService {
      * @return The ID of the newly added user.
      */
     public Integer addUser(UserInfo userInfo) {
+        if (usernameExists(userInfo.getUserName())) {
+            throw new IllegalArgumentException("Username already exists: " + userInfo.getUserName());
+        }
         // Encode password before saving the user
         userInfo.setPassWord(encoder.encode(userInfo.getPassWord()));
         repository.save(userInfo);
