@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Drawer, Button, InputBase, Typography, Box } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Drawer, Button, InputBase, Typography, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 // import UserService from '../service/UserService';
@@ -29,9 +29,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
     const handleSearch = (e) => {
         if (e.key === 'Enter' && isAuthenticated && searchQuery) {
             const queryParams = {};
-            console.log(searchKey);
+            // console.log(searchKey);
             queryParams[searchKey] = searchQuery;
-            console.log(queryParams);
+            // console.log(queryParams);
             onSearch(queryParams);
         }
     };
@@ -49,8 +49,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                             color="primary"
                             onClick={() => navigate('/add-user')}
                             fullWidth
-                            sx={{ mb: 2 }}
-                        >
+                            sx={{ mb: 2 }}>
                             ADD USERS
                         </Button>
                         {isAuthenticated ? (
@@ -62,8 +61,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => navigate('/login')}
-                                fullWidth
-                            >
+                                fullWidth>
                                 LOGIN
                             </Button>
                         )}
@@ -72,26 +70,31 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                 <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
                     USER-APP
                 </Typography>
-                <select 
-                    value={searchKey} // Ensure that the value is tracked
-                    onChange={(e) => setSearchKey(e.target.value)} 
-                    style={{ marginLeft: 10, marginRight: 10 }}
-                >
-                    <option value="">Select Field</option>
-                    <option value="firstName">First Name</option>
-                    <option value="lastName">Last Name</option>
-                    <option value="userName">Username</option>
-                    <option value="email">Email</option>
-                </select>
+                {isAuthenticated && (
+                    <FormControl sx={{ minWidth: 200, marginLeft: 2, marginRight: 2 }}>
+                    <InputLabel id="search-field-label">Select Field</InputLabel>
+                    <Select
+                        labelId="search-field-label"
+                        value={searchKey}
+                        onChange={(e) => setSearchKey(e.target.value)}
+                        label="Select Field"
+                    >
+                        <MenuItem value="">None</MenuItem>
+                        <MenuItem value="firstName">First Name</MenuItem>
+                        <MenuItem value="lastName">Last Name</MenuItem>
+                        <MenuItem value="userName">Username</MenuItem>
+                        <MenuItem value="email">Email</MenuItem>
+                    </Select>
+                </FormControl>
+                )}
                 {isAuthenticated && (
                     <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
-                        <SearchIcon color='info'/>
+                        <SearchIcon color='info' />
                         <InputBase
                             placeholder="SEARCH USERS"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={handleSearch}
-                        />
+                            onKeyDown={handleSearch} />
                     </Box>
                 )}
             </Toolbar>
