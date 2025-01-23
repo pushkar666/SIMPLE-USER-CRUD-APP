@@ -44,6 +44,14 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                 </IconButton>
                 <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)} sx={{ width: 250 }}>
                     <Box sx={{ width: 250, p: 2 }}>
+                    <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                            fullWidth
+                            sx={{ mb: 2 }}>
+                            HOME PAGE
+                        </Button>
                         <Button
                             variant="contained"
                             color="primary"
