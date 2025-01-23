@@ -163,18 +163,17 @@ C:.
 ## API Endpoints
 
 ### Authentication
-- **POST** `/api/auth/login`: Authenticate user and generate JWT.
+- **POST** `auth/generateToken`: Authenticate user and generate JWT.
 
 ### User Management
-- **GET** `/api/users`: Retrieve all paginated users.
-- **POST** `/api/addNewUser`: Add a new user.
-- **POST** `/api/generateToken`: Generates Token on Login
-- **POST** `/api/queryUsers`: Retrieve queried paginated users.
+- **GET** `/auth/users`: Retrieve all paginated users.
+- **POST** `/auth/addNewUser`: Add a new user.
+- **POST** `/auth/queryUsers`: Retrieve queried paginated users.
 
 ---
 
 ## Usage
-1. Log in using the `/login` endpoint.
+1. Log in using the `/generateToken` endpoint.
 2. Perform user operations via the frontend or API.
 
 ---
