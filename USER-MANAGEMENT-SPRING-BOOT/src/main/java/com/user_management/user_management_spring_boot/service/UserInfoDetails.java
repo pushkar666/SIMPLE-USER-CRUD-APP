@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
  * UserDetails interface.
  * It is used to provide user-related information for authentication and
  * authorization purposes.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 public class UserInfoDetails implements UserDetails {
 
@@ -66,21 +68,21 @@ public class UserInfoDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 }

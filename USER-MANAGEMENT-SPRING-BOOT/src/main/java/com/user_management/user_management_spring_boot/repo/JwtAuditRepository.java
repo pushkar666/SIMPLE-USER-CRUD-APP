@@ -13,8 +13,8 @@ import com.user_management.user_management_spring_boot.entity.UserInfo;
  * This interface represents a repository for managing JWT audit records. It extends the JpaRepository interface,
  * which provides CRUD operations and additional methods for querying the database.
  *
- * @author Pushkar D
- * @since 1.0.0
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Repository
 public interface JwtAuditRepository extends JpaRepository<JwtAudit, Long> {

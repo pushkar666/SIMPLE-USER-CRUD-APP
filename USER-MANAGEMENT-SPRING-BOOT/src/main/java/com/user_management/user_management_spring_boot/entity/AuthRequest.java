@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
  * Represents a request for authentication.
  * This class is used to encapsulate the necessary information for user
  * authentication.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Data
 @AllArgsConstructor

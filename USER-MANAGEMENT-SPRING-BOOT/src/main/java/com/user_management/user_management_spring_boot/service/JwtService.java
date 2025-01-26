@@ -24,6 +24,8 @@ import java.util.function.Function;
  * This class provides services related to JSON Web Tokens (JWT).
  * It includes methods for generating, validating, and extracting information
  * from JWT tokens.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Component
 public class JwtService {
@@ -165,7 +167,18 @@ public class JwtService {
         }
     }
 
+    /**
+     * Invalidate the given JWT token by marking it as invalid in the database.
+     * This method should be called when a user logs out or when a token needs to be revoked.
+     *
+     * @param token The JWT token to be invalidated.
+     *
+     * @throws IllegalArgumentException If the token is null or empty.
+     */
     public void invalidateToken(String token) {
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
+        }
         jwtAuditService.revokeToken(token);
     }
 

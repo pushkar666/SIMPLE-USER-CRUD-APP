@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
  * This class represents the query parameters for filtering user data.
  * It is used to encapsulate the search criteria for retrieving user
  * information.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Data
 @NoArgsConstructor

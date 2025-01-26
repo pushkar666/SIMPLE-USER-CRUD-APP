@@ -24,6 +24,7 @@ import java.io.IOException;
  * incoming requests based on the presence of a valid JWT token in the request's Authorization header.
  *
  * @author PUSHKAR D
+ * @version 1.0
  */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {

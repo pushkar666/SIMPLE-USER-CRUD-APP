@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 /**
  * This class represents a response from the user management system.
  * It contains two fields: status and userId.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Data
 @NoArgsConstructor

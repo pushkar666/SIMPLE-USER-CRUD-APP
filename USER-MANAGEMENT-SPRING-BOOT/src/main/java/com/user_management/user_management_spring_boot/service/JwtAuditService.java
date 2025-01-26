@@ -17,9 +17,8 @@ import com.user_management.user_management_spring_boot.repo.UserInfoRepository;
  * It includes methods for saving generated tokens to the database for auditing,
  * and revoking tokens by marking them as invalid in the database.
  *
- * @author YourName
+ * @author PUSHKAR D
  * @version 1.0
- * @since 2022-01-01
  */
 @Service
 public class JwtAuditService {

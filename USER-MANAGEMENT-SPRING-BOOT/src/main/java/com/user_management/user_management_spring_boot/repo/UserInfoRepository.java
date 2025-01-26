@@ -15,6 +15,8 @@ import java.util.Optional;
 /**
  * Repository interface for managing {@link UserInfo} entities.
  * Provides methods for CRUD operations and custom queries.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {

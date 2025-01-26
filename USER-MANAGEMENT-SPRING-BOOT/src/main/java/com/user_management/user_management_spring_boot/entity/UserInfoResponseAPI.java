@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
  * This class represents the response structure for user information.
  * It includes fields such as user ID, username, first name, last name, email,
  * and roles.
+ * @author PUSHKAR D
+ * @version 1.0
  */
 @Data
 @NoArgsConstructor

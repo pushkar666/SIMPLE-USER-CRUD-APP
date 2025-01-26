@@ -243,6 +243,21 @@ public class UserController {
         return ResponseEntity.ok(matchingUsers);
     }
 
+    /**
+     * Handles the POST request to log out the user by invalidating the JWT token.
+     *
+     * @param authHeader The authentication header containing the JWT token.
+     *                   This parameter is optional and can be null if no
+     *                   authentication is required.
+     *
+     * @return A ResponseEntity containing a success message.
+     *         If the authentication header is valid and the JWT token is successfully
+     *         invalidated, the response will contain a status code of 200 (OK) and
+     *         the message "Token successfully invalidated."
+     *         If the authentication header is invalid or the JWT token is not provided,
+     *         the response will contain a status code of 401 (UNAUTHORIZED) and
+     *         the message "Invalid authorization header".
+     */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
