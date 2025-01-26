@@ -18,7 +18,7 @@ const App = () => {
         const token = localStorage.getItem('token');
         return !!token; // Set to true if token exists, false otherwise
     });
-
+    const [isContent, setIsContent] = useState();
     const [users, setUsers] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -36,9 +36,15 @@ const App = () => {
             try {
                 console.log(query);
                 const data = await UserService.queryUsers(query);
+                console.log(data);
                 console.log(data.content);
-                setUsers(data.content);
-                setTotalPages(data.totalPages);
+                if (data.content.length === 0) {
+                    setIsContent(false);
+                } else {
+                    setIsContent(true);
+                    setUsers(data.content);
+                    setTotalPages(data.totalPages);
+                }
             } catch (error) {
                 console.error('Error fetching queried users:', error);
             }
@@ -59,6 +65,7 @@ const App = () => {
                             totalPages={totalPages}
                             setUsers={setUsers}
                             setTotalPages={setTotalPages}
+                            isContent={isContent}
                         />
                     }
                 />
@@ -76,6 +83,7 @@ const App = () => {
                                 totalPages={totalPages}
                                 setUsers={setUsers}
                                 setTotalPages={setTotalPages}
+                                isContent={isContent}
                             />
                         ) : (
                             <Navigate to="/login" />

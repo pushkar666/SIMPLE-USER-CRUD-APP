@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Drawer, Button, InputBase, Typography, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -22,16 +22,54 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
     const [searchKey, setSearchKey] = useState('');
     const navigate = useNavigate();
 
-    const handleLogout = async (e) => {
-        e.preventDefault();
-        const response = await UserService.logout();
-        if (!response) {
-            throw new Error('Failed to log out.');
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+
+            // Auto logout after inactivity (e.g., 15 minutes)
+            const timeoutId = setTimeout(handleLogout, 29.75 * 60 * 1000);
+
+            // Reset the timer on user activity
+            const resetTimer = () => {
+                clearTimeout(timeoutId);
+                setTimeout(handleLogout, 29.75 * 60 * 1000);
+            };
+
+            window.addEventListener('mousemove', resetTimer);
+            window.addEventListener('keypress', resetTimer);
+
+            return () => {
+                clearTimeout(timeoutId);
+                window.removeEventListener('mousemove', resetTimer);
+                window.removeEventListener('keypress', resetTimer);
+            };
+        } else {
+            setIsAuthenticated(false);
         }
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        navigate('/');
+    });
+
+    const handleLogout = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.warn('Token already missing. User may already be logged out.');
+            setIsAuthenticated(false);
+            navigate('/');
+            return;
+        }
+        try {
+            const response = await UserService.logout();
+            if (!response) {
+                throw new Error('Failed to log out.');
+            }
+            localStorage.removeItem('token');
+            setIsAuthenticated(false);
+            navigate('/');
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     };
+
 
     const handleSearch = (e) => {
         if (e.key === 'Enter' && isAuthenticated && searchQuery) {
@@ -49,9 +87,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                 <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(true)}>
                     <MenuIcon />
                 </IconButton>
-                <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)} sx={{ width: 250 }}>
+                <Drawer anchor="left" open={drawerOpen} onClick={() => setDrawerOpen(false)} sx={{ width: 250 }}>
                     <Box sx={{ width: 250, p: 2 }}>
-                    <Button
+                        <Button
                             variant="contained"
                             color="primary"
                             onClick={() => navigate('/')}
@@ -87,20 +125,20 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                 </Typography>
                 {isAuthenticated && (
                     <FormControl sx={{ minWidth: 200, marginLeft: 2, marginRight: 2 }}>
-                    <InputLabel id="search-field-label">Select Field</InputLabel>
-                    <Select
-                        labelId="search-field-label"
-                        value={searchKey}
-                        onChange={(e) => setSearchKey(e.target.value)}
-                        label="Select Field"
-                    >
-                        <MenuItem value="">None</MenuItem>
-                        <MenuItem value="firstName">First Name</MenuItem>
-                        <MenuItem value="lastName">Last Name</MenuItem>
-                        <MenuItem value="userName">Username</MenuItem>
-                        <MenuItem value="email">Email</MenuItem>
-                    </Select>
-                </FormControl>
+                        <InputLabel id="search-field-label">Select Field</InputLabel>
+                        <Select
+                            labelId="search-field-label"
+                            value={searchKey}
+                            onChange={(e) => setSearchKey(e.target.value)}
+                            label="Select Field"
+                        >
+                            <MenuItem value="">None</MenuItem>
+                            <MenuItem value="firstName">First Name</MenuItem>
+                            <MenuItem value="lastName">Last Name</MenuItem>
+                            <MenuItem value="userName">Username</MenuItem>
+                            <MenuItem value="email">Email</MenuItem>
+                        </Select>
+                    </FormControl>
                 )}
                 {isAuthenticated && (
                     <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
