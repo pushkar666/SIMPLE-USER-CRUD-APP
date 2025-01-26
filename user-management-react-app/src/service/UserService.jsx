@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { data } from 'react-router-dom';
+// import { data } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8080/auth/'; // Replace with your actual API base URL
 
@@ -108,6 +108,28 @@ const UserService = {
             return response.data;
         } catch (error) {
             console.error('Error adding new user:', error);
+            throw error;
+        }
+    },
+
+    logout: async () => {
+        try {
+            const token = localStorage.getItem('token');
+            // console.log(token);
+            if (!token) {
+                throw new Error('Token is missing. Please log in again.');
+            }
+            
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            };
+            const response = await axios.post(`${API_URL}logout`, {}, config);
+            return response.data;
+        }
+        catch (error) {
+            console.error('Error during logout:', error);
             throw error;
         }
     },

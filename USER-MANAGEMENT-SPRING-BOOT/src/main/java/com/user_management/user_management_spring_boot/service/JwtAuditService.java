@@ -11,6 +11,16 @@ import com.user_management.user_management_spring_boot.entity.UserInfo;
 import com.user_management.user_management_spring_boot.repo.JwtAuditRepository;
 import com.user_management.user_management_spring_boot.repo.UserInfoRepository;
 
+/**
+ * This class provides services for managing JWT (JSON Web Tokens) and their
+ * auditing.
+ * It includes methods for saving generated tokens to the database for auditing,
+ * and revoking tokens by marking them as invalid in the database.
+ *
+ * @author YourName
+ * @version 1.0
+ * @since 2022-01-01
+ */
 @Service
 public class JwtAuditService {
 
@@ -37,11 +47,17 @@ public class JwtAuditService {
         jwtAuditRepository.save(jwtAudit);
     }
 
+    /**
+     * Revokes a JWT token by marking it as invalid(false) in the database.
+     *
+     * @param token The JWT token to revoke.
+     * @throws RuntimeException If the token is not found in the database.
+     */
     public void revokeToken(String token) {
         JwtAudit jwtAudit = jwtAuditRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Token not found"));
 
-        jwtAudit.setIsValid(false);  // Mark the token as invalid
-        jwtAuditRepository.save(jwtAudit);  // Save the updated record in the database
+        jwtAudit.setIsValid(false);
+        jwtAuditRepository.save(jwtAudit);
     }
 }

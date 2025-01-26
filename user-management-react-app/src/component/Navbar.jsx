@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Drawer, Button, InputBase, Typography, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import UserService from '../service/UserService';
 // import UserService from '../service/UserService';
 
 /**
@@ -21,7 +22,12 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
     const [searchKey, setSearchKey] = useState('');
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const response = await UserService.logout();
+        if (!response) {
+            throw new Error('Failed to log out.');
+        }
         localStorage.removeItem('token');
         setIsAuthenticated(false);
         navigate('/');
