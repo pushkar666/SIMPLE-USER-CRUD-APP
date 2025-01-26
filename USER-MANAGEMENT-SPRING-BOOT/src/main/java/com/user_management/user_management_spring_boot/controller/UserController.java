@@ -132,7 +132,7 @@ public class UserController {
         }
 
         // Check for unique username
-        if (service.usernameExists(userInfo.getEmail())) {
+        if (service.usernameExists(userInfo.getUserName())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new UserResponse("Username already exists", null));
         }
@@ -241,6 +241,17 @@ public class UserController {
 
         Page<UserInfoResponseAPI> matchingUsers = service.queryUsers(queryParams, pageable);
         return ResponseEntity.ok(matchingUsers);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid authorization header");
+        }
+        String token = authHeader.substring(7); // Extract the JWT token
+        jwtService.invalidateToken(token); // Invalidate the token
+        return ResponseEntity.ok("Token successfully invalidated.");
     }
 
     /**

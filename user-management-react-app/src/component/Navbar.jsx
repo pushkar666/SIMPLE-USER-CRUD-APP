@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
  * @param {Object} props - The component's props.
  * @param {boolean} props.isAuthenticated - Indicates whether the user is authenticated.
  * @param {Function} props.setIsAuthenticated - A function to set the authentication state.
+ * @param {Function} props.onSearch - A function to search users based on the parameters passed.
  *
  * @returns {JSX.Element} - The rendered navigation bar component.
  */
@@ -29,9 +30,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
     const handleSearch = (e) => {
         if (e.key === 'Enter' && isAuthenticated && searchQuery) {
             const queryParams = {};
-            // console.log(searchKey);
+            console.log(searchKey);
             queryParams[searchKey] = searchQuery;
-            // console.log(queryParams);
+            console.log(queryParams);
             onSearch(queryParams);
         }
     };

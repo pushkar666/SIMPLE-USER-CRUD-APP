@@ -5,13 +5,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.user_management.user_management_spring_boot.entity.JwtAudit;
+import com.user_management.user_management_spring_boot.repo.JwtAuditRepository;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -21,6 +27,12 @@ import java.util.function.Function;
  */
 @Component
 public class JwtService {
+
+    @Autowired
+    private JwtAuditService jwtAuditService;
+
+    @Autowired
+    private JwtAuditRepository jwtAuditRepository;
 
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
@@ -32,7 +44,11 @@ public class JwtService {
      */
     public String generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userName);
+        String token = createToken(claims, userName);
+
+        jwtAuditService.saveTokenToDatabase(userName, token);
+
+        return token;
     }
 
     /**
@@ -116,8 +132,12 @@ public class JwtService {
      * @return True if the token is valid and not expired, false otherwise.
      */
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        Optional<JwtAudit> jwtAudit = jwtAuditRepository.findByToken(token);
+        if (jwtAudit.isPresent() && jwtAudit.get().getIsValid()) {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }
+        return false;
     }
 
     /**
@@ -143,6 +163,10 @@ public class JwtService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void invalidateToken(String token) {
+        jwtAuditService.revokeToken(token);
     }
 
 }
