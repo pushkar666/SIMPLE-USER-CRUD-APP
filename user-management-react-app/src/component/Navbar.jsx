@@ -66,6 +66,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
             setIsAuthenticated(false);
             navigate('/');
         } catch (error) {
+            localStorage.removeItem('token');
+            setIsAuthenticated(false);
+            navigate('/');
             console.error('Error during logout:', error);
         }
     };
