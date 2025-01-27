@@ -60,10 +60,23 @@ import UserService from '../service/UserService';
 const LoginForm = ({ setIsAuthenticated }) => {
     const [credentials, setCredentials] = useState({ userName: '', passWord: '' });
     const [error, setError] = useState('');
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
+    const validate = () => {
+        const newErrors = {};
+
+        if (!credentials.userName.trim()) newErrors.userName = 'Username is required.';
+        if (!credentials.passWord.trim()) newErrors.passWord = 'Password is required.';
+        else if (credentials.passWord.length < 8) newErrors.passWord = 'Password must be at least 6 characters long.';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Form is valid if no errors
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validate()) return;
         try {
             const token = await UserService.login(credentials);
             if (!token) {
@@ -87,6 +100,8 @@ const LoginForm = ({ setIsAuthenticated }) => {
                     margin="normal"
                     value={credentials.userName}
                     onChange={(e) => setCredentials({ ...credentials, userName: e.target.value })}
+                    error={!!errors.userName}
+                    helperText={errors.userName}
                 />
                 <TextField
                     label="Password"
@@ -95,6 +110,8 @@ const LoginForm = ({ setIsAuthenticated }) => {
                     margin="normal"
                     value={credentials.passWord}
                     onChange={(e) => setCredentials({ ...credentials, passWord: e.target.value })}
+                    error={!!errors.passWord}
+                    helperText={errors.passWord}
                 />
                 <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
                     Login

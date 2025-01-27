@@ -8,7 +8,6 @@ import {
     Pagination,
     Typography,
     Box,
-    Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import UserService from "../service/UserService";
@@ -67,11 +66,6 @@ const HomePage = ({
         }
     };
 
-    // Reset search to reload the page
-    const handleResetSearch = () => {
-        window.location.reload(); // Refreshes the page
-    };
-
     return (
         <Box sx={{ p: 3 }}>
             {isAuthenticated ? (
@@ -79,14 +73,6 @@ const HomePage = ({
                     {isContent === false ? (
                         // No results found
                         <>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={handleResetSearch}
-                                sx={{ mb: 5, ml: 190 }}
-                            >
-                                RESET SEARCH
-                            </Button>
                             <Typography
                                 sx={{
                                     opacity: 0.5,
@@ -103,14 +89,6 @@ const HomePage = ({
                     ) : (
                         // Display user table
                         <>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={handleResetSearch}
-                                sx={{ mb: 5, ml: 190 }}
-                            >
-                                RESET SEARCH
-                            </Button>
                             <Table>
                                 <TableHead>
                                     <TableRow>

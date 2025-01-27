@@ -84,6 +84,11 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
         }
     };
 
+    // Reset search to reload the page
+    const handleResetSearch = () => {
+        window.location.reload(); // Refreshes the page
+    };
+
     return (
         <AppBar position="static" sx={{ bgcolor: 'silver' }}>
             <Toolbar>
@@ -144,14 +149,24 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, onSearch }) => {
                     </FormControl>
                 )}
                 {isAuthenticated && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
-                        <SearchIcon color='info' />
-                        <InputBase
-                            placeholder="SEARCH USERS"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={handleSearch} />
-                    </Box>
+                    <>
+                        <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', p: 0.5, borderRadius: 1 }}>
+                            <SearchIcon color='info' />
+                            <InputBase
+                                placeholder="SEARCH USERS"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleSearch} />
+                        </Box>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleResetSearch}
+                            sx={{ ml: 10}}
+                        >
+                            RESET SEARCH
+                        </Button>
+                    </>
                 )}
             </Toolbar>
         </AppBar>
